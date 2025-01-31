@@ -180,7 +180,8 @@ exclude_lines =
         with open(self.csv_file, "a") as f:
             writer = csv.DictWriter(f, fieldnames=CSV_FIELDNAMES)
 
-            writer.writerow(task_log)
+            filtered_log = {k: v for k, v in task_log.items() if k in CSV_FIELDNAMES}
+            writer.writerow(filtered_log)
 
     def print_summary(self, task_log):
 
