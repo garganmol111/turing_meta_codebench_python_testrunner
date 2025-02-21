@@ -18,6 +18,8 @@ CSV_FIELDNAMES = [
     "base_code.py_summary",
     "incorrect_solution.py",
     "incorrect_solution.py_summary",
+    "claude_pass_rate",
+    "llama_pass_rate",
     "model1.py",
     "model1.py_summary",
     "model2.py",
@@ -156,7 +158,6 @@ exclude_lines =
                             if total_lines > 0
                             else 0
                         )
-
                         task_log["coverage"] = round(percentage, 2)
 
                 else:
@@ -173,6 +174,20 @@ exclude_lines =
 
             task_log[file.parts[-1]] = "PASS" if result.returncode == 0 else "FAIL"
             task_log[f"{file.parts[-1]}_summary"] = result.stdout
+
+        if self.alternate_mode:
+            claude_pass = llama_pass = 0
+
+            for i in range(1, 6):
+                if task_log.get(f"model{i}.py", "FAIL") == "PASS":
+                    claude_pass += 1
+
+            for i in range(6, 11):
+                if task_log.get(f"model{i}.py", "FAIL") == "PASS":
+                    llama_pass += 1
+
+            task_log["claude_pass_rate"] = f"{claude_pass} / 5"
+            task_log["llama_pass_rate"] = f"{llama_pass} / 5"
 
         return task_log
 
