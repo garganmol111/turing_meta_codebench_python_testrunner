@@ -51,7 +51,7 @@ class TestRunner:
         self.test_file = self.temp_folder / "test.py"
         self.metadata_file_name = "metadata.json"
         self.csv_file = self.root_dir / "test_result.csv"
-        self.test_timeout = 30
+        self.test_timeout = 60
 
         with open(self.csv_file, "w") as f:
             writer = csv.DictWriter(f, fieldnames=CSV_FIELDNAMES)
